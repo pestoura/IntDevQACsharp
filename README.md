@@ -52,6 +52,9 @@ IntDevQACsharp/
 3. **Run the Project:**
    ```bash
    dotnet run --project src <source> <replica> <interval> <logFile>
-   Replace <source>, <replica>, <interval>, and <logFile> with actual paths and interval in seconds.
+   ```
+   Replace **<source>**, **<replica>**, **<interval>**, and **<logFile>** with actual paths and interval in seconds.
 
-Example:
+   Example:
+   ```bash
+   dotnet run --project src /path/to/source /path/to/replica 60 /path/to/logfile.log
