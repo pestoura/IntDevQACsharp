@@ -17,3 +17,41 @@ IntDevQACsharp/
 │  
 ├── README.md  
 └── setup.csproj  
+
+### Files
+
+- **Program.cs**: Entry point that initializes logging, sets up synchronization, and runs it periodically.
+- **Logger.cs**: Handles logging both to the console and a log file, updated for thread-safe logging.
+- **FileHelper.cs**: Provides utility methods for file and directory operations.
+- **SyncManager.cs**: Manages the synchronization process between the source and replica folders.
+- **tests/TestFolderSync.cs**: Unit tests using NUnit framework to verify synchronization functionality.
+
+## Features
+
+- **One-way Synchronization**: Automatically updates the replica folder to match the source folder's content.
+- **Periodic Execution**: Synchronization process runs at intervals specified by the user.
+- **Logging**: Detailed logs of file operations (create, copy, delete) are generated to a specified log file and console output.
+- **Command Line Arguments**: Configure source folder path, replica folder path, synchronization interval, and log file path via command line arguments.
+
+## Dependencies
+
+- [.NET Core SDK](https://dotnet.microsoft.com/download) (for building and running the project)
+- [NUnit](https://nunit.org/) (for running unit tests)
+
+## How to Use
+
+1. **Clone Repository**:
+   ```bash
+   git clone https://github.com/pestoura/IntDevQACsharp.git
+   cd IntDevQACsharp
+
+2. **Build the Project:**
+   ```bash
+   dotnet build
+   
+3. **Run the Project:**
+   ```bash
+   dotnet run --project src <source> <replica> <interval> <logFile>
+   Replace <source>, <replica>, <interval>, and <logFile> with actual paths and interval in seconds.
+
+Example:
