@@ -64,7 +64,7 @@ IntDevQACsharp/
    ```bash
    cd tests
    dotnet test
-
+   ```
    This command runs all the unit tests located in the tests directory.
 
 ##Unit Tests
