@@ -5,61 +5,68 @@ using System.Security.Cryptography;
 
 public class SyncManager
 {
-    public void SyncFolders(string source, string replica)
+    public void SynchronizeFolders(string sourceDirectory, string replicaDirectory)
     {
-        if (!Directory.Exists(source))
+        if (!Directory.Exists(sourceDirectory))
         {
-            Logger.Log($"Source directory {source} does not exist.");
+            Logger.Log($"Source directory {sourceDirectory} does not exist.");
             return;
         }
 
-        SyncDirectory(new DirectoryInfo(source), new DirectoryInfo(replica));
+        SynchronizeDirectory(new DirectoryInfo(sourceDirectory), new DirectoryInfo(replicaDirectory));
     }
 
-    private void SyncDirectory(DirectoryInfo source, DirectoryInfo replica)
+    private void SynchronizeDirectory(DirectoryInfo sourceDir, DirectoryInfo replicaDir)
     {
-        if (!replica.Exists)
+        try
         {
-            replica.Create();
-        }
-
-        // Copy new and updated files
-        foreach (FileInfo sourceFile in source.GetFiles())
-        {
-            string replicaFilePath = Path.Combine(replica.FullName, sourceFile.Name);
-            if (!File.Exists(replicaFilePath) || !FilesAreEqual(sourceFile.FullName, replicaFilePath))
+            if (!replicaDir.Exists)
             {
-                FileHelper.CopyFile(sourceFile.FullName, replicaFilePath);
-                Logger.Log($"Copied/Updated file: {sourceFile.FullName} to {replicaFilePath}");
+                replicaDir.Create();
+            }
+
+            // Copy new and updated files
+            foreach (FileInfo sourceFile in sourceDir.GetFiles())
+            {
+                string replicaFilePath = Path.Combine(replicaDir.FullName, sourceFile.Name);
+                if (!File.Exists(replicaFilePath) || !FilesAreEqual(sourceFile.FullName, replicaFilePath))
+                {
+                    FileHelper.CopyFileIfExists(sourceFile.FullName, replicaFilePath);
+                    Logger.Log($"Copied/Updated file: {sourceFile.FullName} to {replicaFilePath}");
+                }
+            }
+
+            // Recursively synchronize subdirectories
+            foreach (DirectoryInfo sourceSubDir in sourceDir.GetDirectories())
+            {
+                DirectoryInfo replicaSubDir = replicaDir.CreateSubdirectory(sourceSubDir.Name);
+                SynchronizeDirectory(sourceSubDir, replicaSubDir);
+            }
+
+            // Delete files and directories that are not in source
+            foreach (FileInfo replicaFile in replicaDir.GetFiles())
+            {
+                string sourceFilePath = Path.Combine(sourceDir.FullName, replicaFile.Name);
+                if (!File.Exists(sourceFilePath))
+                {
+                    FileHelper.DeleteFileIfExists(replicaFile.FullName);
+                    Logger.Log($"Deleted file: {replicaFile.FullName}");
+                }
+            }
+
+            foreach (DirectoryInfo replicaSubDir in replicaDir.GetDirectories())
+            {
+                DirectoryInfo sourceSubDir = new DirectoryInfo(Path.Combine(sourceDir.FullName, replicaSubDir.Name));
+                if (!sourceSubDir.Exists)
+                {
+                    FileHelper.DeleteDirectoryIfExists(replicaSubDir.FullName);
+                    Logger.Log($"Deleted directory: {replicaSubDir.FullName}");
+                }
             }
         }
-
-        // Recursively sync subdirectories
-        foreach (DirectoryInfo sourceSubDir in source.GetDirectories())
+        catch (Exception ex)
         {
-            DirectoryInfo replicaSubDir = replica.CreateSubdirectory(sourceSubDir.Name);
-            SyncDirectory(sourceSubDir, replicaSubDir);
-        }
-
-        // Delete files and directories that are not in source
-        foreach (FileInfo replicaFile in replica.GetFiles())
-        {
-            string sourceFilePath = Path.Combine(source.FullName, replicaFile.Name);
-            if (!File.Exists(sourceFilePath))
-            {
-                FileHelper.DeleteFile(replicaFile.FullName);
-                Logger.Log($"Deleted file: {replicaFile.FullName}");
-            }
-        }
-
-        foreach (DirectoryInfo replicaSubDir in replica.GetDirectories())
-        {
-            DirectoryInfo sourceSubDir = new DirectoryInfo(Path.Combine(source.FullName, replicaSubDir.Name));
-            if (!sourceSubDir.Exists)
-            {
-                FileHelper.DeleteDirectory(replicaSubDir.FullName);
-                Logger.Log($"Deleted directory: {replicaSubDir.FullName}");
-            }
+            Logger.Log($"Error during synchronization: {ex.Message}");
         }
     }
 
