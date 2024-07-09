@@ -53,7 +53,7 @@ IntDevQACsharp/
    ```bash
    dotnet run --project src <source> <replica> <interval> <logFile>
    ```
-   Replace **<source>**, **<replica>**, **<interval>**, and **<logFile>** with actual paths and interval in seconds.
+   Replace <source>, <replica>, <interval>, and <logFile> with actual paths and interval in seconds.
 
    Example:
    ```bash
