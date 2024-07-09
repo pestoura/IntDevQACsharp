@@ -44,6 +44,7 @@ IntDevQACsharp/
    ```bash
    git clone https://github.com/pestoura/IntDevQACsharp.git
    cd IntDevQACsharp
+   cd src
 
 2. **Build the Project:**
    ```bash
@@ -52,9 +53,15 @@ IntDevQACsharp/
 3. **Run the Project:**
    ```bash
    dotnet run --project src <source> <replica> <interval> <logFile>
-   
-   Replace <source>, <replica>, <interval>, and <logFile> with actual paths and interval in seconds.
+   ```
+   Replace **source**, **replica**, **interval**, and **logFile** with actual paths and interval in seconds.
 
    Example:
    ```bash
    dotnet run --project src /path/to/source /path/to/replica 60 /path/to/logfile.log
+
+4. **Run Unit Tests:**
+   ```bash
+   cd tests
+   dotnet test
+   
