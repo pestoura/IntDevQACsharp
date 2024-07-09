@@ -1,43 +1,26 @@
 using System;
 using System.IO;
 
-namespace IntDevQACsharp.src
+public static class Logger
 {
-    public static class Logger
+    private static string logFilePath;
+
+    public static void Initialize(string filePath)
     {
-        private static readonly object lockObject = new object();
-        private static string logFilePath;
-
-        public static void Initialize(string filePath)
+        logFilePath = filePath;
+        using (StreamWriter writer = new StreamWriter(logFilePath, true))
         {
-            logFilePath = filePath;
-            WriteLog("---- Log Started ----");
+            writer.WriteLine("---- Log Started ----");
         }
+    }
 
-        public static void Log(string message)
+    public static void Log(string message)
+    {
+        string logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";  // Use a more descriptive log message format
+        Console.WriteLine(logMessage);
+        using (StreamWriter writer = new StreamWriter(logFilePath, true))
         {
-            string logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
-
-            Console.WriteLine(logMessage);
-            WriteLog(logMessage);
-        }
-
-        private static void WriteLog(string logMessage)
-        {
-            lock (lockObject)
-            {
-                try
-                {
-                    using (StreamWriter writer = new StreamWriter(logFilePath, true))
-                    {
-                        writer.WriteLine(logMessage);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error writing to log file: {ex.Message}");
-                }
-            }
+            writer.WriteLine(logMessage);
         }
     }
 }
