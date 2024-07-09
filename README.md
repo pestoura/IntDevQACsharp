@@ -11,10 +11,7 @@ IntDevQACsharp/
 │ ├── Logger.cs  
 │ ├── FileHelper.cs  
 │ └── SyncManager.cs  
-│  
-├── tests/  
-│ └── TestFolderSync.cs  
-│  
+│    
 ├── README.md  
 └── setup.csproj  
 
@@ -24,7 +21,6 @@ IntDevQACsharp/
 - **Logger.cs**: Handles logging both to the console and a log file, updated for thread-safe logging.
 - **FileHelper.cs**: Provides utility methods for file and directory operations.
 - **SyncManager.cs**: Manages the synchronization process between the source and replica folders.
-- **tests/TestFolderSync.cs**: Unit tests using NUnit framework to verify synchronization functionality.
 
 ## Features
 
@@ -36,7 +32,6 @@ IntDevQACsharp/
 ## Dependencies
 
 - [.NET Core SDK](https://dotnet.microsoft.com/download) (for building and running the project)
-- [NUnit](https://nunit.org/) (for running unit tests)
 
 ## How to Use
 
@@ -60,18 +55,6 @@ IntDevQACsharp/
    ```bash
    dotnet run --project src /path/to/source /path/to/replica 60 /path/to/logfile.log
 
-4. **Run Unit Tests:**
-   ```bash
-   cd tests
-   dotnet test
-   ```
-   This command runs all the unit tests located in the tests directory.
-
-## Unit Tests
-
-Unit tests are implemented using NUnit framework to verify the functionality of synchronization:
-
-TestFolderSync.cs: Tests various scenarios of file creation, deletion, and update to ensure synchronization works correctly.
 
 ## Contributing
 
