@@ -67,17 +67,17 @@ IntDevQACsharp/
    ```
    This command runs all the unit tests located in the tests directory.
 
-##Unit Tests
+## Unit Tests
 
 Unit tests are implemented using NUnit framework to verify the functionality of synchronization:
 
 TestFolderSync.cs: Tests various scenarios of file creation, deletion, and update to ensure synchronization works correctly.
 
-##Contributing
+## Contributing
 
 Contributions are welcome! If you find any issues or have improvements in mind, feel free to open an issue or submit a pull request.
 
-##License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
    
