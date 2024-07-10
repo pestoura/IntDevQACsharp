@@ -1,35 +1,94 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 
-class Program
+namespace DirectorySyncApp
 {
-    static void Main(string[] args)
+    class Program
     {
-        if (args.Length != 4)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Usage: FolderSync <source> <replica> <interval> <logFile>");
-            return;
+            if (args.Length < 4)
+            {
+                Console.WriteLine("Usage: DirectorySyncApp <source_dir> <replica_dir> <interval_seconds> <log_file>");
+                return;
+            }
+
+            string sourceDir = args[0];
+            string replicaDir = args[1];
+            int intervalSeconds = int.Parse(args[2]);
+            string logFile = args[3];
+
+            Console.WriteLine($"Starting synchronization from {sourceDir} to {replicaDir} with interval of {intervalSeconds} seconds.");
+
+            while (true)
+            {
+                try
+                {
+                    SyncFolders(sourceDir, replicaDir, logFile);
+                    Console.WriteLine("Synchronization complete.");
+                    Thread.Sleep(intervalSeconds * 1000); // Convert seconds to milliseconds
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error during synchronization: {ex.Message}");
+                    throw;
+                }
+            }
         }
 
-        string source = args[0];
-        string replica = args[1];
-        int interval;
-        if (!int.TryParse(args[2], out interval))
+        static void SyncFolders(string sourceDir, string replicaDir, string logFile)
         {
-            Console.WriteLine("Invalid interval value. It must be an integer representing seconds.");
-            return;
+            // Set up logging
+            using (StreamWriter logWriter = new StreamWriter(logFile, true))
+            {
+                logWriter.WriteLine($"Starting synchronization from {sourceDir} to {replicaDir}.");
+
+                // Traverse source directory recursively
+                foreach (string srcFilePath in Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories))
+                {
+                    try
+                    {
+                        string relPath = Path.GetRelativePath(sourceDir, srcFilePath);
+                        string dstFilePath = Path.Combine(replicaDir, relPath);
+
+                        string srcHash = CalculateFileHash(srcFilePath);
+                        string dstHash = File.Exists(dstFilePath) ? CalculateFileHash(dstFilePath) : null;
+
+                        if (srcHash != dstHash)
+                        {
+                            File.Copy(srcFilePath, dstFilePath, true);
+                            logWriter.WriteLine($"File copied: {srcFilePath} to {dstFilePath}");
+                        }
+                        else
+                        {
+                            logWriter.WriteLine($"File {srcFilePath} unchanged, skipping copy.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logWriter.WriteLine($"Error processing file {srcFilePath}: {ex.Message}");
+                    }
+                }
+
+                logWriter.WriteLine($"Synchronization completed at {DateTime.Now}");
+                logWriter.WriteLine(); // Add blank line for separation
+            }
         }
-        string logFile = args[3];
 
-        Logger.Initialize(logFile);
-        SyncManager syncManager = new SyncManager();  // Use a more descriptive class name
-
-        while (true)
+        static string CalculateFileHash(string filePath)
         {
-            Logger.Log("Starting synchronization...");
-            syncManager.SyncFolders(source, replica);
-            Logger.Log("Synchronization complete.");
-            Thread.Sleep(interval * 1000);  // Consider using async/await for improved responsiveness (async file operations)
+            using (var sha256 = SHA256.Create())
+            {
+                using (var stream = File.OpenRead(filePath))
+                {
+                    byte[] hash = sha256.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
         }
     }
 }
