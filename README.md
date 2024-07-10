@@ -1,49 +1,39 @@
 # Internal Development in QA (SDET) C#
 
-This C# project facilitates one-way synchronization of two folders: a source folder and a replica folder. The synchronization ensures that the replica folder maintains an identical copy of the source folder's contents, handling file creations, updates, and deletions as necessary.
+This application synchronizes files between two directories at specified intervals using SHA-256 hashing for comparison. It logs synchronization activities to a specified log file.
 
-## Project Structure
+
 
 IntDevQACsharp/  
 │  
 ├── src/  
-│ ├── Program.cs  
-│ ├── Logger.cs  
-│ ├── FileHelper.cs  
-│ └── SyncManager.cs  
+│ ├── Program.cs   
 │    
 ├── README.md  
 └── setup.csproj  
 
-### Files
+## Usage
 
-- **Program.cs**: Entry point that initializes logging, sets up synchronization, and runs it periodically.
-- **Logger.cs**: Handles logging both to the console and a log file, updated for thread-safe logging.
-- **FileHelper.cs**: Provides utility methods for file and directory operations.
-- **SyncManager.cs**: Manages the synchronization process between the source and replica folders.
+### Prerequisites
 
-## Features
+- [.NET Core SDK](https://dotnet.microsoft.com/download)
 
-- **One-way Synchronization**: Automatically updates the replica folder to match the source folder's content.
-- **Periodic Execution**: Synchronization process runs at intervals specified by the user.
-- **Logging**: Detailed logs of file operations (create, copy, delete) are generated to a specified log file and console output.
-- **Command Line Arguments**: Configure source folder path, replica folder path, synchronization interval, and log file path via command line arguments.
+### Running the Application
 
-## Dependencies
-
-- [.NET Core SDK](https://dotnet.microsoft.com/download) (for building and running the project)
-
-## How to Use
-
-1. **Clone Repository**:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/pestoura/IntDevQACsharp.git
-   cd IntDevQACsharp
-   cd src
 
-2. **Build the Project:**
+2. **Navigate to the project directory:**
    ```bash
-   dotnet build
+   cd IntDevQACsharp
+
+3. **Compile and run the application:**
+   ```bash
+   dotnet run -- <source_dir> <replica_dir> <interval_seconds> <log_file>
+Replace <source_dir>, <replica_dir>, <interval_seconds>, and <log_file> with your specific directories and settings.
+xample
+To synchronize files from C:\Source to D:\Replica every 60 seconds and log activities to sync.log:
    
 3. **Run the Project:**
    ```bash
@@ -51,10 +41,24 @@ IntDevQACsharp/
    ```
    Replace **source**, **replica**, **interval**, and **logFile** with actual paths and interval in seconds.
 
-   Example:
+   ### Example:
+   
+   To synchronize files from C:\Source to D:\Replica every 60 seconds and log activities to sync.log:
    ```bash
-   dotnet run --project src /path/to/source /path/to/replica 60 /path/to/logfile.log
+   dotnet run -- "C:\Source" "D:\Replica" 60 sync.log
+   
+## Features
 
+- One-way Synchronization: Automatically updates the replica folder to match the source folder's content.
+- Efficient file synchronization using SHA-256 hashing.
+- Logging of synchronization activities to a specified file.
+- Supports recursive synchronization of subdirectories.
+
+## Implementation Details
+
+- Main File: Program.cs contains the main entry point and synchronization logic.
+- File Hashing: Uses SHA256 from System.Security.Cryptography for file integrity checks.
+- Logging: Writes synchronization activities and errors to a specified log file using StreamWriter.
 
 ## Contributing
 
