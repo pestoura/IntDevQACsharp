@@ -12,6 +12,19 @@ IntDevQACsharp/
 ├── README.md  
 └── IntDevQACsharp.csproj  
 
+## Features
+
+- One-way Synchronization: Automatically updates the replica folder to match the source folder's content.
+- Efficient file synchronization using SHA-256 hashing.
+- Logging of synchronization activities to a specified file.
+- Supports recursive synchronization of subdirectories.
+
+## Implementation Details
+
+- Main File: Program.cs contains the main entry point and synchronization logic.
+- File Hashing: Uses SHA256 from System.Security.Cryptography for file integrity checks.
+- Logging: Writes synchronization activities and errors to a specified log file using StreamWriter.
+
 ## Usage
 
 ### Prerequisites
@@ -47,19 +60,6 @@ IntDevQACsharp/
    ```bash
    dotnet run -- "C:\Source" "D:\Replica" 60 sync.log
    
-## Features
-
-- One-way Synchronization: Automatically updates the replica folder to match the source folder's content.
-- Efficient file synchronization using SHA-256 hashing.
-- Logging of synchronization activities to a specified file.
-- Supports recursive synchronization of subdirectories.
-
-## Implementation Details
-
-- Main File: Program.cs contains the main entry point and synchronization logic.
-- File Hashing: Uses SHA256 from System.Security.Cryptography for file integrity checks.
-- Logging: Writes synchronization activities and errors to a specified log file using StreamWriter.
-
 ## Contributing
 
 Contributions are welcome! If you find any issues or have improvements in mind, feel free to open an issue or submit a pull request.
