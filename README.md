@@ -32,11 +32,9 @@ IntDevQACsharp/
    ```bash
    dotnet build  
    dotnet run --project IntDevQACsharp.csproj -- <source_dir> <replica_dir> <interval_seconds> <log_file>
-Replace <source_dir>, <replica_dir>, <interval_seconds>, and <log_file> with your specific directories and settings.
-xample
-To synchronize files from C:\Source to D:\Replica every 60 seconds and log activities to sync.log:
+   Replace <source_dir>, <replica_dir>, <interval_seconds>, and <log_file> with your specific directories and settings.
    
-3. **Run the Project:**
+4. **Run the Project:**
    ```bash
    dotnet run --project src <source> <replica> <interval> <logFile>
    ```
