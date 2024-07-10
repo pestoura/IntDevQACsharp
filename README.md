@@ -41,7 +41,7 @@ IntDevQACsharp/
    ```bash
    cd IntDevQACsharp
 
-3. **Compile and run the application:**
+3. **Compile and run the Project:**
    ```bash
    dotnet build  
    dotnet run --project IntDevQACsharp.csproj -- <source_dir> <replica_dir> <interval_seconds> <log_file>
@@ -50,7 +50,7 @@ IntDevQACsharp/
    
 4. **Run the Project:**
    ```bash
-   dotnet run --project src <source> <replica> <interval> <logFile>
+   dotnet run --project IntDevQACsharp.csproj -- <source_dir> <replica_dir> <interval_seconds> <log_file>
    ```
    Replace **source**, **replica**, **interval**, and **logFile** with actual paths and interval in seconds.
 
@@ -58,7 +58,7 @@ IntDevQACsharp/
    
    To synchronize files from C:\Source to D:\Replica every 60 seconds and log activities to sync.log:
    ```bash
-   dotnet run -- "C:\Source" "D:\Replica" 60 sync.log
+   dotnet run --project IntDevQACsharp.csproj -- "C:\Source" "D:\Replica" 60 sync.log
    
 ## Contributing
 
