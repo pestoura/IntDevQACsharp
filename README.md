@@ -30,6 +30,7 @@ IntDevQACsharp/
    ```bash
    dotnet build  
    dotnet run --project IntDevQACsharp.csproj -- <source_dir> <replica_dir> <interval_seconds> <log_file>
+   ```
    Replace <source_dir>, <replica_dir>, <interval_seconds>, and <log_file> with your specific directories and settings.
    
 4. **Run the Project:**
