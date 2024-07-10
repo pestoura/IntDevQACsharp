@@ -10,7 +10,7 @@ IntDevQACsharp/
 │ ├── Program.cs   
 │    
 ├── README.md  
-└── setup.csproj  
+└── IntDevQACsharp.csproj  
 
 ## Usage
 
