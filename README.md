@@ -2,8 +2,6 @@
 
 This application synchronizes files between two directories at specified intervals using SHA-256 hashing for comparison. It logs synchronization activities to a specified log file.
 
-
-
 IntDevQACsharp/  
 │  
 ├── src/  
